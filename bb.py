@@ -71,7 +71,6 @@ async def on_ready():
 
         if not event_loops_initialized:
             latestvid.init(bot, loop)
-            # forumsreport.init(bot, loop)
             redditposts.init(bot, loop)
             ff20posts.init(bot, loop)
 

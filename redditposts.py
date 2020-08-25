@@ -38,30 +38,30 @@ def get_latest_reddit_post() -> list:
 
     document = urllib.request.urlopen(request).read()
 
-    rss_data: Document       = parseString(document)
+    rss_data: Document = parseString(document)
 
-    feed:     Element        = rss_data.getElementsByTagName("feed")[0]
+    feed:     Element = rss_data.getElementsByTagName("feed")[0]
 
-    posts:    List[Element]  = feed.getElementsByTagName("entry")
+    posts:    List[Element] = feed.getElementsByTagName("entry")
 
     new_posts: list = []
 
     for post in posts:
-        category: Element      = post.getElementsByTagName("category")[0]
+        category: Element = post.getElementsByTagName("category")[0]
 
-        subreddit: str      = category.getAttribute("label")
+        subreddit: str = category.getAttribute("label")
 
-        author: Element      = post.getElementsByTagName("author")[0]
+        author: Element = post.getElementsByTagName("author")[0]
 
-        author_name: str     = author.getElementsByTagName("name")[0].firstChild.nodeValue
+        author_name: str = author.getElementsByTagName("name")[0].firstChild.nodeValue
         # author_link: str   = author.getElementsByTagName("uri")[0].firstChild.nodeValue
 
-        post_id: str         = post.getElementsByTagName("id")[0].firstChild.nodeValue
+        post_id: str = post.getElementsByTagName("id")[0].firstChild.nodeValue
 
-        link: Element        = post.getElementsByTagName("link")[0]
-        link_href: str       = link.getAttribute("href")
+        link: Element = post.getElementsByTagName("link")[0]
+        link_href: str = link.getAttribute("href")
 
-        title: str           = post.getElementsByTagName("title")[0].firstChild.nodeValue
+        title: str = post.getElementsByTagName("title")[0].firstChild.nodeValue
 
         if post_id in redditposts_announced:
             break
@@ -80,8 +80,9 @@ def get_latest_reddit_post() -> list:
 
     return new_posts
 
-async def check_forums_reddit(forumschannel : discord.TextChannel, emoji_kekban_emoji : discord.Emoji):
-    newposts = None
+
+async def check_forums_reddit(forumschannel: discord.TextChannel, emoji_kekban_emoji: discord.Emoji):
+    newposts: list = []
 
     try:
         newposts: list = get_latest_reddit_post()
@@ -97,7 +98,9 @@ async def check_forums_reddit(forumschannel : discord.TextChannel, emoji_kekban_
                         if botauth.testing_mode:
                             continue
 
-                        post_message: str = f'<@&{staticconfig.bug_notifications_role}> New post on **{reddit_post["sub"]}** by **{reddit_post["author"]}**:\n{reddit_post["url"]}'
+                        post_message: str = f'<@&{staticconfig.Vandiland.bug_notifications_role}> New post on ' \
+                                            f'**{reddit_post["sub"]}** by **{reddit_post["author"]}**:\n' \
+                                            f'{reddit_post["url"]} '
 
                         try:
                             reddit_post_message: discord.Message = await forumschannel.send(post_message)
@@ -110,19 +113,16 @@ async def check_forums_reddit(forumschannel : discord.TextChannel, emoji_kekban_
     except Exception as e:
         print('Error while retrieving the posts:', e, file=sys.stderr)
 
-def init(bot: commands.Bot, loop: asyncio.AbstractEventLoop):
-    check_forums_task_started: bool = False
 
+def init(bot: commands.Bot, loop: asyncio.AbstractEventLoop):
     async def check_forums():
-        vandiland:          discord.Guild       = bot.get_guild(staticconfig.vandiland_id)
-        emoji_kekban_emoji: discord.Emoji       = await vandiland.fetch_emoji(staticconfig.emoji_kekban)
-        forumschannel:      discord.TextChannel = vandiland.get_channel(staticconfig.forums_channel_id)
+        vandiland:                discord.Guild = bot.get_guild(staticconfig.Vandiland.gid)
+        emoji_kekban_emoji:       discord.Emoji = await vandiland.fetch_emoji(staticconfig.Vandiland.emoji_kekban)
+        forumschannel:      discord.TextChannel = vandiland.get_channel(staticconfig.Vandiland.forums_channel_id)
 
         while True:
             await check_forums_reddit(forumschannel, emoji_kekban_emoji)
             await asyncio.sleep(staticconfig.delay_refresh)
 
-    if not check_forums_task_started:
-        loop.create_task(check_forums())
-        check_forums_task_started = True
+    loop.create_task(check_forums())
 

@@ -7,15 +7,16 @@ import discord
 from discord.ext import commands
 
 
-magic_number: bytes   = bytes("RIOT", "ASCII")
-version: bytes        = bytes([0, 0])
+magic_number:   bytes = bytes("RIOT", "ASCII")
+version:        bytes = bytes([0, 0])
 data_length_size: int = 4
-garbage_length: int   = 278
-header_size: int      = len(magic_number) + len(version) + garbage_length + data_length_size
+garbage_length:   int = 278
+header_size:      int = len(magic_number) + len(version) + garbage_length + data_length_size
 
-data_garbage_length = 66
- 
-async def dump_replay(attachment : discord.Attachment):
+data_garbage_length: int = 66
+
+
+async def dump_replay(attachment: discord.Attachment):
     try:           
         async with aiohttp.ClientSession() as session:
             async with session.get(attachment.url) as r:
@@ -64,6 +65,7 @@ async def dump_replay(attachment : discord.Attachment):
         print(e, file=sys.stderr)
         return None
 
+
 def gen_table(data, header=False):
     col_widths: list = []
 
@@ -95,7 +97,7 @@ def gen_table(data, header=False):
     return out_str
 
 
-async def parse_attachment(bot : commands.Bot, channel : discord.TextChannel, attachment : discord.Attachment):
+async def parse_attachment(bot: commands.Bot, channel: discord.TextChannel, attachment: discord.Attachment):
     if attachment.filename.lower().endswith(".rofl"):
         data = await dump_replay(attachment)
 
@@ -121,12 +123,12 @@ async def parse_attachment(bot : commands.Bot, channel : discord.TextChannel, at
                         else:
                             losing_team.append( (player['NAME'], player['SKIN'], player_cs, player_kda, player['GOLD_EARNED']) )
 
-                    header: tuple =                     ("Player",                       "Champion", "CS", "KDA", "Gold")
-                    team_lost_header: tuple =           ("Losing team",                  "",         "",   "",    "")
+                    header:                     tuple = ("Player",                       "Champion", "CS", "KDA", "Gold")
+                    team_lost_header:           tuple = ("Losing team",                  "",         "",   "",    "")
                     team_lost_header_underline: tuple = ("-" * len(team_lost_header[0]), "",         "",   "",    "")
-                    team_won_header: tuple =            ("Winning team",                 "",         "",   "",    "")
-                    team_won_header_underline: tuple =  ("-" * len(team_lost_header[0]), "",         "",   "",    "")
-                    empty_row: tuple =                  ("",                             "",         "",   "",    "")
+                    team_won_header:            tuple = ("Winning team",                 "",         "",   "",    "")
+                    team_won_header_underline:  tuple = ("-" * len(team_lost_header[0]), "",         "",   "",    "")
+                    empty_row:                  tuple = ("",                             "",         "",   "",    "")
 
                     table_data.append(header)
                     table_data.append(team_lost_header)
@@ -151,9 +153,10 @@ async def parse_attachment(bot : commands.Bot, channel : discord.TextChannel, at
                 print(e, file=sys.stderr)
                 return
 
-            await channel.send(embed = embed)
+            await channel.send(embed=embed)
         else:
             print("Invalid ROFL file.")
+
 
 async def parse_message(bot : commands.Bot, message : discord.Message):
     attachments = message.attachments

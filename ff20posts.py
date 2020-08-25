@@ -39,14 +39,14 @@ def get_latest_ff20_posts() -> list:
 
     postlist: BeautifulSoup = soup.select_one('#news')
 
-    posts:    list = postlist.find_all('div', class_ = ['post'])
+    posts:    list = postlist.find_all('div', class_=['post'])
 
     newposts: list = []
 
     for post in posts:
-        post_id:  str         = post.find_next('a')['name']
+        post_id:          str = post.find_next('a')['name']
         header: BeautifulSoup = post.select_one('.news-title')
-        post_url: str         = header.find_next('a')["href"]
+        post_url:         str = header.find_next('a')["href"]
 
         if not post_id or not post_url:
             continue
@@ -66,8 +66,8 @@ def get_latest_ff20_posts() -> list:
     return newposts
 
 
-async def check_ff20_vandiland(forumschannel : discord.TextChannel, emoji_kekban_emoji : discord.Emoji):
-    newposts = None
+async def check_ff20_vandiland(forums_channel: discord.TextChannel, emoji_kekban_emoji: discord.Emoji):
+    newposts: list = []
     
     try:
         newposts: list = get_latest_ff20_posts()
@@ -84,7 +84,7 @@ async def check_ff20_vandiland(forumschannel : discord.TextChannel, emoji_kekban
                             continue
 
                         try:
-                            forums_post_message: discord.Message = await forumschannel.send(post['url'])
+                            forums_post_message: discord.Message = await forums_channel.send(post['url'])
                             await forums_post_message.add_reaction(emoji_kekban_emoji)
                         except Exception as e:
                             print('Discord error:', e, file=sys.stderr)
@@ -96,17 +96,13 @@ async def check_ff20_vandiland(forumschannel : discord.TextChannel, emoji_kekban
 
 
 def init(bot: commands.Bot, loop: asyncio.AbstractEventLoop):
-    check_ff20_task_started: bool = False
-
     async def check_ff20():    
-        vandiland:          discord.Guild       = bot.get_guild(staticconfig.vandiland_id)
-        emoji_kekban_emoji: discord.Emoji       = await vandiland.fetch_emoji(staticconfig.emoji_kekban)
-        forumschannel:      discord.TextChannel = vandiland.get_channel(staticconfig.forums_channel_id)
+        vandiland:                discord.Guild = bot.get_guild(staticconfig.Vandiland.gid)
+        emoji_kekban_emoji:       discord.Emoji = await vandiland.fetch_emoji(staticconfig.Vandiland.emoji_kekban)
+        forums_channel:     discord.TextChannel = vandiland.get_channel(staticconfig.Vandiland.forums_channel_id)
 
         while True:
-            await check_ff20_vandiland(forumschannel, emoji_kekban_emoji)
+            await check_ff20_vandiland(forums_channel, emoji_kekban_emoji)
             await asyncio.sleep(staticconfig.delay_refresh)
-            
-    if not check_ff20_task_started:
-        loop.create_task(check_ff20())
-        check_ff20_task_started = True
+
+    loop.create_task(check_ff20())

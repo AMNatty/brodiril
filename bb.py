@@ -31,7 +31,7 @@ async def on_message(message: discord.Message):
 
 @bot.event
 async def on_raw_reaction_add(payload: discord.RawReactionActionEvent):
-    await forumsreport.trydelete(bot, payload)
+    await forumsreport.try_delete(bot, payload)
 
 
 @bot.event
@@ -77,7 +77,7 @@ async def on_ready():
         global event_loops_initialized
 
         if not event_loops_initialized:
-            # latestvid.init(bot, loop)
+            latestvid.init(bot, loop)
             redditposts.init(bot, loop)
             ff20posts.init(bot, loop)
 

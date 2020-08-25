@@ -2,6 +2,7 @@ import time
 import json
 import sys
 import datetime
+import typing
 
 cooldowns: dict = {}
 
@@ -14,7 +15,7 @@ except json.JSONDecodeError as e:
     print("JSON decode error!", file=sys.stderr)
 
 
-def check_cd(user: int, cooldown: str) -> str:
+def check_cd(user: int, cooldown: str) -> typing.Optional[str]:
     uk: str = str(user)
 
     if uk not in cooldowns:
@@ -23,12 +24,12 @@ def check_cd(user: int, cooldown: str) -> str:
     if cooldown not in cooldowns[uk]:
         return None
 
-    timediff: float = cooldowns[uk][cooldown] - time.time()
+    time_diff: float = cooldowns[uk][cooldown] - time.time()
 
-    if timediff < 0:
+    if time_diff < 0:
         return None
 
-    return "{:0>8}".format(str(datetime.timedelta(seconds = int(timediff))))
+    return "{:0>8}".format(str(datetime.timedelta(seconds=int(time_diff))))
 
 
 def update_cd(user: int, cooldown: str, seconds: int) -> None:

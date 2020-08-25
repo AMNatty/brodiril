@@ -6,9 +6,33 @@ import datetime
 import cooldowns
 import typing
 
-banned_phrases = [ 'heil', 'hitler', 'holocaust', 'nazi', 'nigger', 'n*gga', 'n*gger', 'nigga', 'n!gger', 'n!gga', 'n1gga', 'n1gger', 'bitch', 'b!tch', 'b1tch', 'retard', 'whore' ]
+banned_phrases = [
+    'fag',
+    'faggot',
+    'heil',
+    'hitler',
+    'holocaust',
+    'nazi',
+    'nigger',
+    'n*gga',
+    'n*gger',
+    'nigga',
+    'n!gger',
+    'n!gga',
+    'n1gga',
+    'n1gger',
+    'bitch',
+    'b!tch',
+    'b1tch',
+    'retard',
+    'whore'
+]
 
 naming_scheme = re.compile(r'^.*?[a-zA-Z0-9]{3}.*?$')
+
+
+async def is_vandiland(ctx: commands.Context) -> bool:
+    return ctx.guild and ctx.guild.id == staticconfig.Vandiland.gid
 
 
 class Administrative(commands.Cog):
@@ -56,6 +80,7 @@ class Administrative(commands.Cog):
              '*Please contact a moderator in case of an emergency reset request.*',
         rest_is_raw=True
     )
+    @commands.check(is_vandiland)
     @commands.guild_only()
     async def rename(self, ctx: commands.Context, *, newname: str):
         if len(newname) < 2:
@@ -66,7 +91,7 @@ class Administrative(commands.Cog):
             await ctx.send('**Error:** Your new name is too long!')
             return
 
-        if ctx.guild.id != staticconfig.Vandiland.vandiland_id:
+        if ctx.guild.id != staticconfig.Vandiland.gid:
             await ctx.send('Sorry, this command is disabled on this server.')
             return
 

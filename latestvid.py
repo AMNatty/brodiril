@@ -30,7 +30,7 @@ else:
 def get_latest_video_url() -> str:
     youtube: googleapiclient.discovery.Resource = googleapiclient.discovery.build(api_service_name, api_version, developerKey=botauth.youtube_api_key)
 
-    # TODO: Fix the pyling error
+    # TODO: Fix the pylint error
     request = youtube.playlistItems().list(
         part="contentDetails",
         maxResults=1,
@@ -43,7 +43,7 @@ def get_latest_video_url() -> str:
 def get_latest_gamediril_video_url() -> str:
     youtube: googleapiclient.discovery.Resource = googleapiclient.discovery.build(api_service_name, api_version, developerKey=botauth.youtube_api_key)
 
-    # TODO: Fix the pyling error
+    # TODO: Fix the pylint error
     request = youtube.playlistItems().list(
         part="contentDetails",
         maxResults=1,

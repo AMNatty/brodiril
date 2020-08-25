@@ -20,6 +20,10 @@ bot: commands.Bot = commands.Bot(command_prefix='>')
 
 @bot.event
 async def on_message(message: discord.Message):
+    # Autodelete autoresponse garbage from Dyno
+    if message.author.id == 155149108183695360 and "BAN ZED" in message.content:
+        await message.delete()
+
     await replayanalyze.parse_message(bot, message)
 
     await bot.process_commands(message)
@@ -66,11 +70,14 @@ async def on_ready():
 
     loop: asyncio.events = asyncio.get_event_loop()
 
+    presence: discord.Game = discord.Game("Running version " + staticconfig.commit_hash[:7:])
+    await bot.change_presence(activity=presence)
+
     async with loops_lock:
         global event_loops_initialized
 
         if not event_loops_initialized:
-            latestvid.init(bot, loop)
+            # latestvid.init(bot, loop)
             redditposts.init(bot, loop)
             ff20posts.init(bot, loop)
 

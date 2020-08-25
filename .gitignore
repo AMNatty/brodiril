@@ -6,5 +6,5 @@ __pycache__
 *.log
 *.json
 
-
+/staticconfig.py
 /botauth.py

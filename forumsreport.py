@@ -9,9 +9,9 @@ async def try_delete(bot: commands.Bot, payload: discord.RawReactionActionEvent)
         if payload.emoji.id == staticconfig.Vandiland.emoji_kekban:
             if payload.channel_id == staticconfig.Vandiland.forums_channel_id:
 
-                vandiland:            discord.Guild = bot.get_guild(staticconfig.Vandiland.vandiland_id)
-                member:              discord.Member = vandiland.get_member(payload.user_id)
-                channel:        discord.TextChannel = bot.get_channel(payload.channel_id)
+                vandiland:            discord.Guild = await bot.fetch_guild(staticconfig.Vandiland.gid)
+                member:              discord.Member = await vandiland.fetch_member(payload.user_id)
+                channel:        discord.TextChannel = await bot.fetch_channel(payload.channel_id)
                 bug_admin_role:        discord.Role = vandiland.get_role(staticconfig.Vandiland.bug_administrator)
 
                 if bug_admin_role in member.roles:

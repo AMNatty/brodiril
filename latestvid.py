@@ -65,7 +65,7 @@ async def check_and_notify(bot: commands.Bot, channel: staticconfig.YTChannel) -
                 return
             
             try:
-                vidchannel: discord.TextChannel = bot.get_channel(channel.target_channel)
+                vidchannel: discord.TextChannel = await bot.fetch_channel(channel.target_channel)
                 await vidchannel.send(new_message)
             except Exception as err:
                 print("Discord error:", err, file=sys.stderr)

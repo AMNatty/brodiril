@@ -117,9 +117,9 @@ class Administrative(commands.Cog):
             await ctx.send('Your nickname was changed. You will be able to change it again in **30 days**.')
 
             embed: discord.Embed = discord.Embed(
-                title = 'Name Change',
-                colour = discord.Colour(0x00ff99),
-                description = f'{ctx.author.mention} changed their name.',
+                title='Name Change',
+                colour=discord.Colour(0x00ff99),
+                description=f'{ctx.author.mention} changed their name.',
                 timestamp=datetime.datetime.now())
 
             embed.add_field(name='Old Name', value=old_name)

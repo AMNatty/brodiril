@@ -6,7 +6,7 @@ BOT_PATH="$(dirname "$0")"
 cd $BOT_PATH
 bro_log_file=$BOT_PATH"/logs/bro_$(date +"%Y-%m-%d-%H-%M-%S").log"
 
-git fetch >>$bro_log_file 2>&1
+git pull --ff-only >>$bro_log_file 2>&1
 
 static_config_template_file="staticconfig.py.template"
 static_config="$(cat "$static_config_template_file")"

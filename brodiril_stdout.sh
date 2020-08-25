@@ -4,7 +4,7 @@ BOT_PATH="$(dirname "$0")"
 
 cd $BOT_PATH
 
-git fetch
+git pull --ff-only
 
 static_config_template_file="staticconfig.py.template"
 static_config="$(cat "$static_config_template_file")"

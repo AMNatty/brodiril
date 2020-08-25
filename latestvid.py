@@ -27,7 +27,7 @@ else:
     print(f"File does not exist, will be created (eventually): {file_name}")
 
  
-def get_latest_video_url(playlist_id: str) -> str:
+async def get_latest_video_url(playlist_id: str) -> str:
     youtube: googleapiclient.discovery.Resource = googleapiclient.discovery.build(api_service_name, api_version, developerKey=botauth.youtube_api_key)
 
     # TODO: Fix the pylint error
@@ -43,7 +43,7 @@ def get_latest_video_url(playlist_id: str) -> str:
 
 async def check_and_notify(bot: commands.Bot, channel: staticconfig.YTChannel) -> None:
     try:
-        vid: str = get_latest_video_url(channel.playlist_id)
+        vid: str = await get_latest_video_url(channel.playlist_id)
     except Exception as exception:
         print("Error while retrieving the latest video:", exception, file=sys.stderr)
         return
@@ -56,8 +56,8 @@ async def check_and_notify(bot: commands.Bot, channel: staticconfig.YTChannel) -
             updated_cache = True
 
             yturl:       str = f"https://youtube.com/watch?v={vid}"
-            new_message: str = f"Hey {'@everyone' if channel.should_ping else 'everyone'}, **{channel.name}** has " \
-                               f"uploaded a new video!\n{yturl} "
+            ping:        str = "@everyone" if channel.should_ping else "everyone"
+            new_message: str = f"Hey {ping}, **{channel.name}** has uploaded a new video!\n{yturl} "
 
             print('New video:', vid)
 
@@ -76,8 +76,6 @@ async def check_and_notify(bot: commands.Bot, channel: staticconfig.YTChannel) -
 
 
 def init(bot: commands.Bot, loop: asyncio.AbstractEventLoop) -> None:
-    check_uploads_task_started: bool = False
-
     async def check_uploads():
         while True:
             for channel in staticconfig.channel_list:
@@ -85,6 +83,4 @@ def init(bot: commands.Bot, loop: asyncio.AbstractEventLoop) -> None:
 
             await asyncio.sleep(staticconfig.delay_refresh)
 
-    if not check_uploads_task_started:
-        loop.create_task(check_uploads())
-        check_uploads_task_started = True
+    loop.create_task(check_uploads())

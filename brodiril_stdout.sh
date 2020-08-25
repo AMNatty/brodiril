@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/sh
+set -e
 
 BOT_PATH="$(dirname "$0")"
 

@@ -20,5 +20,5 @@ python3 -m pip install google-api-python-client  >>$bro_log_file 2>&1
 
 python3 -u bb.py >>$bro_log_file 2>&1 &
 BOT_PID="$!"
-trap 'kill -9 $BOT_PID' ERR EXIT SIGTERM SIGKILL
+trap 'kill -9 $BOT_PID' EXIT SIGTERM SIGKILL
 wait $BOT_PID

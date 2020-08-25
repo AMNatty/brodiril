@@ -27,37 +27,23 @@ else:
     print(f"File does not exist, will be created (eventually): {file_name}")
 
  
-def get_latest_video_url() -> str:
+def get_latest_video_url(playlist_id: str) -> str:
     youtube: googleapiclient.discovery.Resource = googleapiclient.discovery.build(api_service_name, api_version, developerKey=botauth.youtube_api_key)
 
     # TODO: Fix the pylint error
     request = youtube.playlistItems().list(
         part="contentDetails",
         maxResults=1,
-        playlistId="UUZ-oWkpMnHjTJpeOOlD80OA"
-    )
-    response = request.execute()
-
-    return response["items"][0]["contentDetails"]["videoId"]
- 
-def get_latest_gamediril_video_url() -> str:
-    youtube: googleapiclient.discovery.Resource = googleapiclient.discovery.build(api_service_name, api_version, developerKey=botauth.youtube_api_key)
-
-    # TODO: Fix the pylint error
-    request = youtube.playlistItems().list(
-        part="contentDetails",
-        maxResults=1,
-        playlistId="UUXempLARIyhl6dM2yg1sw4A"
+        playlistId=playlist_id
     )
     response = request.execute()
 
     return response["items"][0]["contentDetails"]["videoId"]
 
 
-async def check_uploads_vandiland(vidchannel) -> None:
+async def check_and_notify(bot: commands.Bot, channel: staticconfig.YTChannel) -> None:
     try:
-        vid: str = get_latest_video_url()
-        vid_gamediril: str = get_latest_gamediril_video_url()
+        vid: str = get_latest_video_url(channel.playlist_id)
     except Exception as exception:
         print("Error while retrieving the latest video:", exception, file=sys.stderr)
         return
@@ -70,7 +56,8 @@ async def check_uploads_vandiland(vidchannel) -> None:
             updated_cache = True
 
             yturl:       str = f"https://youtube.com/watch?v={vid}"
-            new_message: str = f"Hey @everyone, **Vandiril** has uploaded a new video!\n{yturl}"
+            new_message: str = f"Hey {'@everyone' if channel.should_ping else 'everyone'}, **{channel.name}** has " \
+                               f"uploaded a new video!\n{yturl} "
 
             print('New video:', vid)
 
@@ -78,24 +65,7 @@ async def check_uploads_vandiland(vidchannel) -> None:
                 return
             
             try:
-                await vidchannel.send(new_message)
-            except Exception as err:
-                print("Discord error:", err, file=sys.stderr)
-        
-    if vid_gamediril:
-        if vid_gamediril not in uploaded_announced:
-            uploaded_announced.append(vid_gamediril)
-            updated_cache = True
-
-            yturl:       str = f"https://youtube.com/watch?v={vid_gamediril}"
-            new_message: str = f"Hey everyone, **Gamediril** has uploaded a new video!\n{yturl}"
-
-            print('New video:', vid_gamediril)
-
-            if botauth.testing_mode:
-                return
-            
-            try:
+                vidchannel: discord.TextChannel = bot.get_channel(channel.target_channel)
                 await vidchannel.send(new_message)
             except Exception as err:
                 print("Discord error:", err, file=sys.stderr)
@@ -105,16 +75,14 @@ async def check_uploads_vandiland(vidchannel) -> None:
             json.dump(uploaded_announced, uploaded_cache_file)
 
 
-
 def init(bot: commands.Bot, loop: asyncio.AbstractEventLoop) -> None:
-    vandiland: discord.Guild = bot.get_guild(staticconfig.vandiland_id)
-    vidchannel: discord.TextChannel = vandiland.get_channel(staticconfig.uploaded_channel_id)
-
     check_uploads_task_started: bool = False
 
     async def check_uploads():
         while True:
-            await check_uploads_vandiland(vidchannel)
+            for channel in staticconfig.channel_list:
+                await check_and_notify(bot, channel)
+
             await asyncio.sleep(staticconfig.delay_refresh)
 
     if not check_uploads_task_started:

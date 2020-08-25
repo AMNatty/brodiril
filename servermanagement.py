@@ -10,6 +10,7 @@ banned_phrases = [ 'heil', 'hitler', 'holocaust', 'nazi', 'nigger', 'n*gga', 'n*
 
 naming_scheme = re.compile(r'^.*?[a-zA-Z0-9]{3}.*?$')
 
+
 class Administrative(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -65,7 +66,7 @@ class Administrative(commands.Cog):
             await ctx.send('**Error:** Your new name is too long!')
             return
 
-        if ctx.guild.id != staticconfig.vandiland_id:
+        if ctx.guild.id != staticconfig.Vandiland.vandiland_id:
             await ctx.send('Sorry, this command is disabled on this server.')
             return
 

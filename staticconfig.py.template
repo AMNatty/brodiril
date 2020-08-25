@@ -1,19 +1,42 @@
+import typing
+
 bot_id: int = 565299046613516288
 manager: int = 263648016982867969
 
-bug_administrator:      int = 500694663745896458
-
-bug_notifications_role: int = 702665168794157077
-
-vandiland_id:           int = 220920607099846657
-
-forums_channel_id:      int = 485434667982651392
-
-uploaded_channel_id:    int = 498415887179841567
-
-emoji_kekban:           int = 695214550517153792
 
 logging_channel:        int = 471357087763529729
+
+
+class Vandiland:
+    gid:                    int = 220920607099846657
+    uploaded_channel_id:    int = 498415887179841567
+    emoji_kekban:           int = 695214550517153792
+    bug_administrator:      int = 500694663745896458
+    bug_notifications_role: int = 702665168794157077
+    forums_channel_id:      int = 485434667982651392
+
+
+class Coding:
+    id: int = 747545877018706061
+    videos_id: int = 747549969816223844
+
+
+class YTChannel:
+    def __init__(self, channel_name: str, target_channel: int, playlist_id: str, should_ping: bool = False):
+        self.name: str = channel_name
+        self.target_channel: int = target_channel
+        self.playlist_id: str = playlist_id
+        self.should_ping: bool = should_ping
+
+
+channel_list: typing.List[YTChannel] = [
+    YTChannel("Vandiril", Vandiland.uploaded_channel_id, "UUZ-oWkpMnHjTJpeOOlD80OA", should_ping=True),
+    YTChannel("Gamediril", Vandiland.uploaded_channel_id, "UUXempLARIyhl6dM2yg1sw4A"),
+    YTChannel("TechLinked", Coding.videos_id, "UUeeFfhMcJa1kjtfZAGskOCA"),
+    YTChannel("Hardware Unboxed", Coding.videos_id, "UUI8iQa1hv7oV_Z8D35vVuSg"),
+    YTChannel("Linus Tech Tips", Coding.videos_id, "UUXuqSBlHAE6Xw-yeJA0Tunw"),
+    YTChannel("Gamers Nexus", Coding.videos_id, "UUhIs72whgZI9w6d6FhwGGHA"),
+]
 
 
 SECOND: int = 1
@@ -27,3 +50,4 @@ rename_cooldown: int = 30 * DAY
 
 # The period between API calls / data refreshes
 delay_refresh: int = 240
+

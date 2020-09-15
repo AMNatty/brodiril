@@ -82,12 +82,16 @@ class Administrative(commands.Cog):
     )
     @commands.check(is_vandiland)
     @commands.guild_only()
-    async def rename(self, ctx: commands.Context, *, newname: str):
-        if len(newname) < 2:
+    async def rename(self, ctx: commands.Context, *, new_name: str):
+        if not new_name:
+            await ctx.send(f'**Usage:** {ctx.prefix}{ctx.invoked_with} <your_desired_name>')
+            return
+
+        if len(new_name) < 2:
             await ctx.send('**Error:** Your new name is too short!')
             return            
         
-        if len(newname) > 32:
+        if len(new_name) > 32:
             await ctx.send('**Error:** Your new name is too long!')
             return
 
@@ -95,13 +99,13 @@ class Administrative(commands.Cog):
             await ctx.send('Sorry, this command is disabled on this server.')
             return
 
-        normalized = newname.lower()
+        normalized = new_name.lower()
 
         if any(substring in normalized for substring in banned_phrases):
             await ctx.send('**Error:** Your name contains a banned word or character!')
             return
 
-        if naming_scheme.match(newname) is None:
+        if naming_scheme.match(new_name) is None:
             await ctx.send('**Error:** It seems that your new name does not follow the naming guidelines.')
             return            
 
@@ -113,7 +117,7 @@ class Administrative(commands.Cog):
 
         try:
             old_name: str = ctx.author.nick if ctx.author.nick is not None else ctx.author.name
-            await ctx.author.edit(nick = newname)
+            await ctx.author.edit(nick=new_name)
             await ctx.send('Your nickname was changed. You will be able to change it again in **30 days**.')
 
             embed: discord.Embed = discord.Embed(
@@ -123,7 +127,7 @@ class Administrative(commands.Cog):
                 timestamp=datetime.datetime.now())
 
             embed.add_field(name='Old Name', value=old_name)
-            embed.add_field(name='New Name', value=newname)
+            embed.add_field(name='New Name', value=new_name)
             embed.add_field(name='Cooldown', value='**30 days**')
 
             await self.bot.get_channel(staticconfig.logging_channel).send(embed = embed)

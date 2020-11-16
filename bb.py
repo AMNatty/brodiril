@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 
 import discord
-import json
 import botauth
 import sys
 from discord.ext import commands
 import asyncio
-import urllib
+import startupconfig
 import staticconfig
 import traceback
 import forumsreport
@@ -70,8 +69,15 @@ async def on_ready():
 
     loop: asyncio.events = asyncio.get_event_loop()
 
-    presence: discord.Game = discord.Game("Running version " + staticconfig.commit_hash[:7:])
+    version_short: str = staticconfig.commit_hash[:7:]
+    presence: discord.Game = discord.Game(f"Running version {version_short}")
     await bot.change_presence(activity=presence)
+
+    startup_config: startupconfig.StartupConfig = startupconfig.StartupConfigLoader.load()
+
+    if startup_config and startup_config.notify_channel:
+        startup_channel = await bot.fetch_channel(startup_config.notify_channel)
+        await startup_channel.send(f"Restarted with version **{version_short}**.")
 
     async with loops_lock:
         global event_loops_initialized

@@ -28,7 +28,9 @@ else:
 
  
 async def get_latest_video_url(playlist_id: str) -> str:
-    youtube: googleapiclient.discovery.Resource = googleapiclient.discovery.build(api_service_name, api_version, developerKey=botauth.youtube_api_key)
+    youtube: googleapiclient.discovery.Resource = googleapiclient.discovery.build(api_service_name,
+                                                                                  api_version,
+                                                                                  developerKey=botauth.youtube_api_key)
 
     # TODO: Fix the pylint error
     request = youtube.playlistItems().list(

@@ -30,8 +30,8 @@ else:
 def get_latest_reddit_post() -> list:
     request: urllib.request.Request = urllib.request.Request(
         subreddit_url,
-        data = None,
-        headers = {
+        data=None,
+        headers={
             'User-Agent': 'brodiril:v0.1 (by /u/493msi)'
         }
     )
@@ -82,8 +82,6 @@ def get_latest_reddit_post() -> list:
 
 
 async def check_forums_reddit(forumschannel: discord.TextChannel, emoji_kekban_emoji: discord.Emoji):
-    newposts: list = []
-
     try:
         newposts: list = get_latest_reddit_post()
 

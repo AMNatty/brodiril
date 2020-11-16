@@ -19,6 +19,7 @@ class Vandiland:
 class Coding:
     id: int = 747545877018706061
     videos_id: int = 747549969816223844
+    general_id: int = 747545877454913658
 
 
 class YTChannel:
@@ -36,6 +37,8 @@ channel_list: typing.List[YTChannel] = [
     YTChannel("Hardware Unboxed", Coding.videos_id, "UUI8iQa1hv7oV_Z8D35vVuSg"),
     YTChannel("Linus Tech Tips", Coding.videos_id, "UUXuqSBlHAE6Xw-yeJA0Tunw"),
     YTChannel("Gamers Nexus", Coding.videos_id, "UUhIs72whgZI9w6d6FhwGGHA"),
+
+    YTChannel("Tom Scott", Coding.general_id, "UUBa659QWEk1AI4Tg--mrJ2A")
 ]
 
 

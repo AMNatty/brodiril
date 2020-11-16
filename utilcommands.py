@@ -15,7 +15,7 @@ class Management(commands.Cog):
     @commands.is_owner()
     async def kill(self, ctx: commands.Context):
         startupconfig.StartupConfigLoader.save(startupconfig.StartupConfig(ctx.channel.id))
-        await ctx.send("F")
+        await ctx.send("Exitting... systemd/OpenRC should restart the service shortly!")
         sys.exit(0)
 
 

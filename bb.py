@@ -19,10 +19,6 @@ bot: commands.Bot = commands.Bot(command_prefix='>')
 
 @bot.event
 async def on_message(message: discord.Message):
-    # Autodelete autoresponse garbage from Dyno
-    if message.author.id == 155149108183695360 and "BAN ZED" in message.content:
-        await message.delete()
-
     await replayanalyze.parse_message(bot, message)
 
     await bot.process_commands(message)

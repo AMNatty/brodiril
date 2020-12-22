@@ -35,7 +35,7 @@ async def on_command_error(ctx: commands.Context, error: Exception):
         await ctx.send_help(ctx.command)
 
     elif isinstance(error, commands.CommandOnCooldown):
-        await ctx.send(f'You need to wait {error.retry_after} seconds to use this command again!')
+        await ctx.send(f'You need to wait { error.retry_after } seconds to use this command again!')
 
     elif isinstance(error, commands.CommandInvokeError):
         cause: BaseException = error.__cause__

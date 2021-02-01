@@ -37,6 +37,7 @@ channel_list: typing.List[YTChannel] = [
     YTChannel("Hardware Unboxed", Coding.videos_id, "UUI8iQa1hv7oV_Z8D35vVuSg"),
     YTChannel("Linus Tech Tips", Coding.videos_id, "UUXuqSBlHAE6Xw-yeJA0Tunw"),
     YTChannel("Gamers Nexus", Coding.videos_id, "UUhIs72whgZI9w6d6FhwGGHA"),
+	YTChannel("TechQuickie", Coding.videos_id, "UC0vBXGSyV14uvJ4hECDOl0Q"),
 
     YTChannel("Tom Scott", Coding.important_videos_id, "UUBa659QWEk1AI4Tg--mrJ2A"),
     YTChannel("Half as Interesting", Coding.important_videos_id, "UUuCkxoKLYO_EQ2GeFtbM_bw"),

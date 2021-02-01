@@ -18,7 +18,7 @@ class Vandiland:
 
 class Coding:
     id: int = 747545877018706061
-    videos_id: int = 747549969816223844
+    tech_news_videos_id: int = 747549969816223844
     important_videos_id: int = 791032028430729237
 
 
@@ -33,11 +33,12 @@ class YTChannel:
 channel_list: typing.List[YTChannel] = [
     YTChannel("Vandiril", Vandiland.uploaded_channel_id, "UUZ-oWkpMnHjTJpeOOlD80OA", should_ping=True),
     YTChannel("Gamediril", Vandiland.uploaded_channel_id, "UUXempLARIyhl6dM2yg1sw4A"),
-    YTChannel("TechLinked", Coding.videos_id, "UUeeFfhMcJa1kjtfZAGskOCA"),
-    YTChannel("Hardware Unboxed", Coding.videos_id, "UUI8iQa1hv7oV_Z8D35vVuSg"),
-    YTChannel("Linus Tech Tips", Coding.videos_id, "UUXuqSBlHAE6Xw-yeJA0Tunw"),
-    YTChannel("Gamers Nexus", Coding.videos_id, "UUhIs72whgZI9w6d6FhwGGHA"),
-	YTChannel("TechQuickie", Coding.videos_id, "UC0vBXGSyV14uvJ4hECDOl0Q"),
+
+    YTChannel("TechLinked", Coding.tech_news_videos_id, "UUeeFfhMcJa1kjtfZAGskOCA"),
+    YTChannel("Hardware Unboxed", Coding.tech_news_videos_id, "UUI8iQa1hv7oV_Z8D35vVuSg"),
+    YTChannel("Linus Tech Tips", Coding.tech_news_videos_id, "UUXuqSBlHAE6Xw-yeJA0Tunw"),
+    YTChannel("Gamers Nexus", Coding.tech_news_videos_id, "UUhIs72whgZI9w6d6FhwGGHA"),
+    YTChannel("Techquickie", Coding.tech_news_videos_id, "UC0vBXGSyV14uvJ4hECDOl0Q"),
 
     YTChannel("Tom Scott", Coding.important_videos_id, "UUBa659QWEk1AI4Tg--mrJ2A"),
     YTChannel("Half as Interesting", Coding.important_videos_id, "UUuCkxoKLYO_EQ2GeFtbM_bw"),

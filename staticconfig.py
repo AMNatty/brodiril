@@ -4,10 +4,8 @@ bot_id: int = 565299046613516288
 manager: int = 263648016982867969
 
 
-logging_channel:        int = 471357087763529729
-
-
 class Vandiland:
+    logging_channel:        int = 471357087763529729
     gid:                    int = 220920607099846657
     uploaded_channel_id:    int = 498415887179841567
     emoji_kekban:           int = 695214550517153792
@@ -58,3 +56,14 @@ rename_cooldown: int = 30 * DAY
 # The period between API calls / data refreshes
 delay_refresh: int = 240
 
+try:
+    from dulwich import repo
+    current_repo = repo.Repo(".")
+    commit_hash: str = current_repo.head().decode("ASCII")
+except ModuleNotFoundError:
+    commit_hash: str = "???"
+except repo.NotGitRepository:
+    commit_hash: str = "???"
+
+if __name__ == "__main__":
+    print("Current commit hash: ", commit_hash)

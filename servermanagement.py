@@ -69,7 +69,7 @@ class Administrative(commands.Cog):
                 description=f'{ctx.author.mention} reset {user.mention}\'s {cooldown} cooldown.',
                 timestamp=datetime.datetime.now())
 
-            await self.bot.get_channel(staticconfig.logging_channel).send(embed = embed)
+            await self.bot.get_channel(staticconfig.Vandiland.logging_channel).send(embed = embed)
         else:
             await ctx.send('*No cooldown to reset.*')
 
@@ -93,10 +93,6 @@ class Administrative(commands.Cog):
         
         if len(new_name) > 32:
             await ctx.send('**Error:** Your new name is too long!')
-            return
-
-        if ctx.guild.id != staticconfig.Vandiland.gid:
-            await ctx.send('Sorry, this command is disabled on this server.')
             return
 
         normalized = new_name.lower()
@@ -130,7 +126,7 @@ class Administrative(commands.Cog):
             embed.add_field(name='New Name', value=new_name)
             embed.add_field(name='Cooldown', value='**30 days**')
 
-            await self.bot.get_channel(staticconfig.logging_channel).send(embed = embed)
+            await self.bot.get_channel(staticconfig.Vandiland.logging_channel).send(embed=embed)
 
             cooldowns.update_cd(ctx.message.author.id, 'rename', staticconfig.rename_cooldown)
         except discord.Forbidden:

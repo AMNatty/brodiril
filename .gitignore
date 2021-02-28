@@ -6,6 +6,6 @@ __pycache__
 *.log
 *.json
 /.idea
+/venv
 
-/staticconfig.py
 /botauth.py

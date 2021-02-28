@@ -93,5 +93,5 @@ async def on_ready():
     print('Available commands:', ', '.join([command for command in bot.all_commands]))
 
 if __name__ == "__main__":
-    print('Starting with key: ', botauth.discord_bot_key[:6:] + '*' * len(botauth.discord_bot_key[6::]))
+    print('Starting...')
     bot.run(botauth.discord_bot_key)

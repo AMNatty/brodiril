@@ -59,6 +59,7 @@ async def on_command_error(ctx: commands.Context, error: Exception):
 event_loops_initialized: bool = False
 loops_lock: asyncio.Lock = asyncio.Lock()
 
+
 @bot.event
 async def on_ready():
     print('The bot is up and ready.')

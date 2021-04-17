@@ -18,6 +18,7 @@ class Coding:
     id: int = 747545877018706061
     tech_news_videos_id: int = 747549969816223844
     important_videos_id: int = 791032028430729237
+    other_id: int = 832770801014669342
 
 
 class YTChannel:
@@ -41,6 +42,9 @@ channel_list: typing.List[YTChannel] = [
     YTChannel("Tom Scott", Coding.important_videos_id, "UUBa659QWEk1AI4Tg--mrJ2A"),
     YTChannel("Half as Interesting", Coding.important_videos_id, "UUuCkxoKLYO_EQ2GeFtbM_bw"),
     YTChannel("Wendover Productions", Coding.important_videos_id, "UU9RM-iSvTu1uPJb8X5yp3EQ"),
+
+    YTChannel("LiveOverflow", Coding.other_id, "UUlcE-kVhqyiHCcjYwcpfj9w"),
+    YTChannel("Sebastian Lague", Coding.other_id, "UUmtyQOKKmrMVaKuRXz02jbQ"),
 ]
 
 

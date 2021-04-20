@@ -58,7 +58,7 @@ async def check_and_notify(bot: commands.Bot, channel: staticconfig.YTChannel) -
             updated_cache = True
 
             yturl:       str = f"https://youtube.com/watch?v={vid}"
-            ping:        str = "@everyone" if channel.should_ping else "everyone"
+            ping:        str = "everyone" if not channel.should_ping else "@everyone" if channel.ping_role == -1 else f"<@&{channel.ping_role}>"
             new_message: str = f"Hey {ping}, **{channel.name}** has uploaded a new video!\n{yturl} "
 
             print('New video:', vid)

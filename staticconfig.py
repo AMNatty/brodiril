@@ -22,11 +22,12 @@ class Coding:
 
 
 class YTChannel:
-    def __init__(self, channel_name: str, target_channel: int, playlist_id: str, should_ping: bool = False):
+    def __init__(self, channel_name: str, target_channel: int, playlist_id: str, should_ping: bool = False, ping_role: int = -1):
         self.name: str = channel_name
         self.target_channel: int = target_channel
         self.playlist_id: str = playlist_id
         self.should_ping: bool = should_ping
+        self.ping_role: int = ping_role
 
 
 channel_list: typing.List[YTChannel] = [

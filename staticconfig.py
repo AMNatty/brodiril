@@ -15,10 +15,14 @@ class Vandiland:
 
 
 class Coding:
-    id: int = 747545877018706061
-    tech_news_videos_id: int = 747549969816223844
-    important_videos_id: int = 791032028430729237
-    other_id: int = 832770801014669342
+    id:                     int = 747545877018706061
+    tech_news_videos_id:    int = 747549969816223844
+    important_videos_id:    int = 791032028430729237
+    other_id:               int = 832770801014669342
+
+class Johann:
+    uploaded_channel_id:    int = 822525060677238844
+    announcements_role:     int = 831919915811209276
 
 
 class YTChannel:
@@ -46,6 +50,8 @@ channel_list: typing.List[YTChannel] = [
 
     YTChannel("LiveOverflow", Coding.other_id, "UUlcE-kVhqyiHCcjYwcpfj9w"),
     YTChannel("Sebastian Lague", Coding.other_id, "UUmtyQOKKmrMVaKuRXz02jbQ"),
+
+    YTChannel("Jóhann", Johann.uploaded_channel_id, "UUkNNlzB4Squ2n9iaDTt3Igw", should_ping=True, ping_role=Johann.announcements_role),
 ]
 
 

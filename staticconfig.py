@@ -52,6 +52,7 @@ channel_list: typing.List[YTChannel] = [
     YTChannel("Tom Scott", Coding.important_videos_id, "UUBa659QWEk1AI4Tg--mrJ2A"),
     YTChannel("Half as Interesting", Coding.important_videos_id, "UUuCkxoKLYO_EQ2GeFtbM_bw"),
     YTChannel("Wendover Productions", Coding.important_videos_id, "UU9RM-iSvTu1uPJb8X5yp3EQ"),
+    YTChannel("Louis Rossmann", Coding.important_videos_id, "UUl2mFZoRqjw_ELax4Yisf6w"),
 
     YTChannel("LiveOverflow", Coding.other_id, "UUlcE-kVhqyiHCcjYwcpfj9w"),
     YTChannel("Sebastian Lague", Coding.other_id, "UUmtyQOKKmrMVaKuRXz02jbQ"),

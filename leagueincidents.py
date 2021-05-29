@@ -27,21 +27,21 @@ class Translation:
 class Update:
     def __init__(self):
         self.id: typing.Optional[int] = None
-        self.translations: typing.Optional[list[Translation]] = None
+        self.translations: typing.Optional[typing.List[Translation]] = None
         self.author: typing.Optional[str] = None
         self.publish: typing.Optional[bool] = None
         self.updated_at: typing.Optional[str] = None
-        self.publish_locations: typing.Optional[list[str]] = None
+        self.publish_locations: typing.Optional[typing.List[str]] = None
         self.created_at: typing.Optional[str] = None
 
 
 class Incident:
     def __init__(self):
-        self.platforms: typing.Optional[list[str]] = None
+        self.platforms: typing.Optional[typing.List[str]] = None
         self.id: typing.Optional[int] = None
         self.maintenance_status: typing.Optional[object] = None
-        self.titles: typing.Optional[list[Title]] = None
-        self.updates: typing.Optional[list[Update]] = None
+        self.titles: typing.Optional[typing.List[Title]] = None
+        self.updates: typing.Optional[typing.List[Update]] = None
         self.updated_at: typing.Optional[str] = None
         self.incident_severity: typing.Optional[str] = None
         self.created_at: typing.Optional[str] = None
@@ -52,9 +52,9 @@ class Report:
     def __init__(self, values: dict):
         self.id: typing.Optional[str] = None
         self.name: typing.Optional[str] = None
-        self.locales: typing.Optional[list[str]] = None
+        self.locales: typing.Optional[typing.List[str]] = None
         self.maintenances: typing.Optional[list] = None
-        self.incidents: typing.Optional[list[Incident]] = None
+        self.incidents: typing.Optional[typing.List[Incident]] = None
 
         vars(self).update(values)
 
@@ -69,7 +69,7 @@ def get_url(label: str):
 
 file_name: str = 'cache/incidents.json'
 
-incidents_announced: list[int] = []
+incidents_announced: typing.List[int] = []
 
 if os.path.isfile(file_name):
     try:
@@ -81,7 +81,7 @@ else:
     print(f'File does not exist, will be created (eventually): {file_name}')
 
 
-def get_latest_incidents(label: str) -> list[Update]:
+def get_latest_incidents(label: str) -> typing.List[Update]:
     request: urllib.request.Request = urllib.request.Request(
         get_url(label),
         data=None,
@@ -94,7 +94,7 @@ def get_latest_incidents(label: str) -> list[Update]:
 
     report: Report = json.loads(document, object_hook=Report)
 
-    updates: list[Update] = []
+    updates: typing.List[Update] = []
 
     for incident in report.incidents:
         for update in incident.updates:
@@ -105,7 +105,7 @@ def get_latest_incidents(label: str) -> list[Update]:
 
 async def check_league_incidents_vandiland(forums_channel: discord.TextChannel, emoji_kekban_emoji: discord.Emoji):
     try:
-        new_incidents: list[Update] = [*get_latest_incidents(euw_label), *get_latest_incidents(pbe_label)]
+        new_incidents: typing.List[Update] = [*get_latest_incidents(euw_label), *get_latest_incidents(pbe_label)]
 
         if new_incidents:
             for update in new_incidents:
@@ -113,7 +113,7 @@ async def check_league_incidents_vandiland(forums_channel: discord.TextChannel, 
                     if update.id not in incidents_announced:
                         incidents_announced.append(update.id)
 
-                        translations: list[Translation] = update.translations
+                        translations: typing.List[Translation] = update.translations
 
                         if not translations:
                             continue

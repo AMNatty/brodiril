@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
+import pathlib
+from pathlib import Path
 
 import discord
 import botauth
 import sys
 from discord.ext import commands
 import asyncio
+
+import leagueincidents
 import startupconfig
 import staticconfig
 import traceback
@@ -83,6 +87,7 @@ async def on_ready():
             latestvid.init(bot, loop)
             redditposts.init(bot, loop)
             ff20posts.init(bot, loop)
+            leagueincidents.init(bot, loop)
 
             event_loops_initialized = True
             print('Initialized the event loops!')
@@ -94,4 +99,10 @@ async def on_ready():
 
 if __name__ == "__main__":
     print('Starting...')
+
+    cache_dir = Path("cache")
+    if not cache_dir.is_dir():
+        print(f"Creating the {cache_dir} directory.")
+        cache_dir.mkdir(parents=True, exist_ok=True)
+
     bot.run(botauth.discord_bot_key)

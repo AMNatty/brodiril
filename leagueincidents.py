@@ -62,6 +62,8 @@ class Report:
 euw_label: str = 'euw1'
 pbe_label: str = 'pbe'
 
+IncidentInfo = typing.Tuple[Report, Incident, Update]
+
 
 def get_url(label: str):
     return f'https://lol.secure.dyn.riotcdn.net/channels/public/x/status/{label}.json'
@@ -81,7 +83,7 @@ else:
     print(f'File does not exist, will be created (eventually): {file_name}')
 
 
-def get_latest_incidents(label: str) -> typing.List[Update]:
+def get_latest_incidents(label: str) -> typing.List[IncidentInfo]:
     request: urllib.request.Request = urllib.request.Request(
         get_url(label),
         data=None,
@@ -94,21 +96,21 @@ def get_latest_incidents(label: str) -> typing.List[Update]:
 
     report: Report = json.loads(document, object_hook=Report)
 
-    updates: typing.List[Update] = []
+    updates: typing.List[IncidentInfo] = []
 
     for incident in report.incidents:
         for update in incident.updates:
-            updates.append(update)
+            updates.append((report, incident, update))
 
     return updates
 
 
 async def check_league_incidents_vandiland(forums_channel: discord.TextChannel, emoji_kekban_emoji: discord.Emoji):
     try:
-        new_incidents: typing.List[Update] = [*get_latest_incidents(euw_label), *get_latest_incidents(pbe_label)]
+        new_incidents: typing.List[IncidentInfo] = [*get_latest_incidents(euw_label), *get_latest_incidents(pbe_label)]
 
         if new_incidents:
-            for update in new_incidents:
+            for report, incident, update in new_incidents:
                 if update and update.id and update.translations:
                     if update.id not in incidents_announced:
                         incidents_announced.append(update.id)
@@ -123,7 +125,7 @@ async def check_league_incidents_vandiland(forums_channel: discord.TextChannel, 
                         except StopIteration:
                             continue
 
-                        message: str = f"⚠️ **{update.author}**: {english_translation.content}"
+                        message: str = f"⚠️ **{update.author}**: [{report.name}] {english_translation.content}"
 
                         if botauth.testing_mode:
                             print('New League incident: [', update.id, "]", message)

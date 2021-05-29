@@ -125,7 +125,8 @@ async def check_league_incidents_vandiland(forums_channel: discord.TextChannel, 
                         except StopIteration:
                             continue
 
-                        message: str = f"⚠️ **{update.author}**: [{report.name}] {english_translation.content}"
+                        message: str = f"<@&{staticconfig.Vandiland.bug_notifications_role}>\n" \
+                                       f"⚠️ **{update.author}**: [{report.name}] {english_translation.content}"
 
                         if botauth.testing_mode:
                             print('New League incident: [', update.id, "]", message)

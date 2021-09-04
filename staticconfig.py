@@ -25,6 +25,10 @@ class Johann:
     uploaded_channel_id:    int = 822525060677238844
     announcements_role:     int = 831919915811209276
 
+class Vyra:
+    uploaded_channel_id:    int = 868076618290188298
+    announcements_role:     int = 868077763603603526
+
 
 class YTChannel:
     def __init__(self, channel_name: str,
@@ -58,6 +62,7 @@ channel_list: typing.List[YTChannel] = [
     YTChannel("Sebastian Lague", Coding.other_id, "UUmtyQOKKmrMVaKuRXz02jbQ"),
 
     YTChannel("Jóhann", Johann.uploaded_channel_id, "UUkNNlzB4Squ2n9iaDTt3Igw", should_ping=True, ping_role=Johann.announcements_role),
+    YTChannel("Vyra", Vyra.uploaded_channel_id, "UUX2ONEmUy9HS8qJKb3A_8HQ", should_ping=True, ping_role=Vyra.announcements_role)
 ]
 
 

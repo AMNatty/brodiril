@@ -12,7 +12,7 @@ from xml.dom.minidom import Document, Element, parseString
 from typing import List
 
 reddit_base_url: str = 'https://www.reddit.com'
-subreddit_url:      str = f'{reddit_base_url}/r/PBE+leaguePBE/new.rss'
+subreddit_url:   str = f'{reddit_base_url}/r/{"+".join(staticconfig.reddit_config.keys())}/new.rss'
 file_name:       str = 'cache/reddit_cache.json'
 
 redditposts_announced: list = []
@@ -28,6 +28,9 @@ else:
 
 
 def get_latest_reddit_post() -> list:
+    if botauth.testing_mode:
+        print("Retrieving new Reddit posts from: ", subreddit_url)
+
     request: urllib.request.Request = urllib.request.Request(
         subreddit_url,
         data=None,
@@ -81,7 +84,7 @@ def get_latest_reddit_post() -> list:
     return new_posts
 
 
-async def check_forums_reddit(forumschannel: discord.TextChannel, emoji_kekban_emoji: discord.Emoji):
+async def check_forums_reddit(bot: discord.Client, emoji_kekban_emoji: discord.Emoji):
     try:
         newposts: list = get_latest_reddit_post()
 
@@ -91,35 +94,51 @@ async def check_forums_reddit(forumschannel: discord.TextChannel, emoji_kekban_e
                     if reddit_post['id'] not in redditposts_announced:
                         redditposts_announced.append(reddit_post['id'])
 
-                        print(f'New {reddit_post["sub"]} post:', reddit_post['id'])
+                        sub_name: str = reddit_post["sub"]
+
+                        print(f'New {sub_name} post:', reddit_post['id'])
+
+                        sub_name_stripped: str = sub_name.split("/", 2)[1]
+
+                        if sub_name_stripped not in staticconfig.reddit_config:
+                            print("    [no config for this sub!]")
+                            continue
+
+                        sub_config: staticconfig.RedditConfig = staticconfig.reddit_config[sub_name_stripped]
 
                         if botauth.testing_mode:
                             continue
 
-                        post_message: str = f'<@&{staticconfig.Vandiland.bug_notifications_role}> New post on ' \
-                                            f'**{reddit_post["sub"]}** by **{reddit_post["author"]}**:\n' \
+                        post_message: str = f'New post on ' \
+                                            f'**{sub_name}** by **{reddit_post["author"]}**:\n' \
                                             f'{reddit_post["url"]} '
 
+                        if sub_config.mention_role is not None:
+                            post_message = f"<@&{sub_config.mention_role}> " + post_message
+
                         try:
-                            reddit_post_message: discord.Message = await forumschannel.send(post_message)
-                            await reddit_post_message.add_reaction(emoji_kekban_emoji)
-                        except Exception as e:
-                            print('Discord error:', e, file=sys.stderr)
+                            channel: discord.TextChannel = bot.get_channel(sub_config.channel)
+                            reddit_post_message: discord.Message = await channel.send(post_message)
+
+                            if sub_config.deleter_emoji:
+                                await reddit_post_message.add_reaction(emoji_kekban_emoji)
+
+                        except Exception as e1:
+                            print('Discord error:', e1, file=sys.stderr)
 
             with open(file_name, 'w') as forums_cache_file:
                 json.dump(redditposts_announced, forums_cache_file)
-    except Exception as e:
-        print('Error while retrieving the posts:', e, file=sys.stderr)
+    except Exception as e2:
+        print('Error while retrieving the posts:', e2, file=sys.stderr)
 
 
 def init(bot: commands.Bot, loop: asyncio.AbstractEventLoop):
     async def check_forums():
         vandiland:                discord.Guild = bot.get_guild(staticconfig.Vandiland.gid)
         emoji_kekban_emoji:       discord.Emoji = await vandiland.fetch_emoji(staticconfig.Vandiland.emoji_kekban)
-        forumschannel:      discord.TextChannel = vandiland.get_channel(staticconfig.Vandiland.forums_channel_id)
 
         while True:
-            await check_forums_reddit(forumschannel, emoji_kekban_emoji)
+            await check_forums_reddit(bot, emoji_kekban_emoji)
             await asyncio.sleep(staticconfig.delay_refresh)
 
     loop.create_task(check_forums())

@@ -1,4 +1,6 @@
+import json
 import typing
+import os
 
 bot_id: int = 565299046613516288
 manager: int = 263648016982867969
@@ -24,6 +26,7 @@ class Coding:
 class Johann:
     uploaded_channel_id:    int = 822525060677238844
     announcements_role:     int = 831919915811209276
+
 
 class Vyra:
     uploaded_channel_id:    int = 868076618290188298
@@ -64,6 +67,29 @@ channel_list: typing.List[YTChannel] = [
     YTChannel("Jóhann", Johann.uploaded_channel_id, "UUkNNlzB4Squ2n9iaDTt3Igw", should_ping=True, ping_role=Johann.announcements_role),
     YTChannel("Vyra", Vyra.uploaded_channel_id, "UUX2ONEmUy9HS8qJKb3A_8HQ", should_ping=True, ping_role=Vyra.announcements_role)
 ]
+
+
+reddit_config_path: str = "config/reddit_posts.json"
+
+
+class RedditConfig:
+    def __init__(self, sub_config):
+        self.channel = int(sub_config["channel"])
+        self.mention_role: typing.Optional[int] = int(sub_config["mentionRole"]) if "mentionRole" in sub_config else None
+        self.deleter_emoji = bool(sub_config["addKekban"]) if "addKekban" in sub_config else False
+
+
+reddit_config: typing.Dict[str, RedditConfig] = {}
+
+
+if os.path.isfile(reddit_config_path):
+    print("Loading Reddit config...")
+    with open(reddit_config_path, "r") as file:
+        reddit_config_json = json.load(file)
+
+        reddit_config = {sub_name: RedditConfig(sub_config) for sub_name, sub_config in reddit_config_json.items()}
+else:
+    print("No Reddit config detected.")
 
 
 SECOND: int = 1

@@ -23,8 +23,7 @@ bot: commands.Bot = commands.Bot(command_prefix='>', intents=discord.Intents.all
 
 @bot.event
 async def on_message(message: discord.Message):
-    if message.author.id == 198780988959096832 and "cancer" in message.content:
-        await asyncio.sleep(5)
+    if message.author.id == 198780988959096832 and "cancer" in message.content.lower():
         await message.delete()
 
     await replayanalyze.parse_message(bot, message)

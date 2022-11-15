@@ -74,7 +74,7 @@ async def on_ready():
     loop: asyncio.events = asyncio.get_event_loop()
 
     version_short: str = staticconfig.commit_hash[:7:]
-    presence: discord.CustomActivity = discord.CustomActivity(f"Running version {version_short}")
+    presence: discord.Game = discord.Game(f"Running version {version_short}")
     await bot.change_presence(activity=presence)
 
     startup_config: startupconfig.StartupConfig = startupconfig.StartupConfigLoader.load()

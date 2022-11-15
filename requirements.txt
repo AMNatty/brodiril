@@ -1,4 +1,4 @@
-dulwich
-discord
-beautifulsoup4
-google-api-python-client
+dulwich==0.20.50
+discord==2.1.0
+beautifulsoup4==4.11.1
+google-api-python-client==2.65.0

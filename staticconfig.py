@@ -64,8 +64,11 @@ channel_list: typing.List[YTChannel] = [
     YTChannel("LiveOverflow", Coding.other_id, "UUlcE-kVhqyiHCcjYwcpfj9w"),
     YTChannel("Sebastian Lague", Coding.other_id, "UUmtyQOKKmrMVaKuRXz02jbQ"),
 
-    YTChannel("Jóhann", Johann.uploaded_channel_id, "UUkNNlzB4Squ2n9iaDTt3Igw", should_ping=True, ping_role=Johann.announcements_role),
-    YTChannel("Vyra", Vyra.uploaded_channel_id, "UUX2ONEmUy9HS8qJKb3A_8HQ", should_ping=True, ping_role=Vyra.announcements_role)
+    YTChannel("Jóhann", Johann.uploaded_channel_id, "UUkNNlzB4Squ2n9iaDTt3Igw",
+              should_ping=True, ping_role=Johann.announcements_role),
+
+    YTChannel("Vyra", Vyra.uploaded_channel_id, "UUX2ONEmUy9HS8qJKb3A_8HQ",
+              should_ping=True, ping_role=Vyra.announcements_role)
 ]
 
 

@@ -96,8 +96,8 @@ async def on_ready():
             event_loops_initialized = True
             print('Initialized the event loops!')
 
-    bot.load_extension('servermanagement')
-    bot.load_extension('utilcommands')
+    await bot.load_extension('servermanagement')
+    await bot.load_extension('utilcommands')
 
     print('Available commands:', ', '.join([command for command in bot.all_commands]))
 

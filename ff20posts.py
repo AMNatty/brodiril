@@ -27,8 +27,8 @@ else:
 def get_latest_ff20_posts() -> list:
     request: urllib.request.Request = urllib.request.Request(
         ff20_url,
-        data = None, 
-        headers = {
+        data=None,
+        headers={
             'User-Agent': 'brodiril:v0.1 (by /u/493msi)'
         }
     )

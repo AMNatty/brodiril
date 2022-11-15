@@ -102,7 +102,10 @@ async def parse_attachment(bot: commands.Bot, channel: discord.TextChannel, atta
         data = await dump_replay(attachment)
 
         if data is not None:
-            embed: discord.Embed = discord.Embed(title="LoL Replay", colour=discord.Colour(0x0099ff), description=f"Patch: {data['gameVersion']}\nDuration: {data['gameLength']}")
+            patch_description: str = f"Patch: {data['gameVersion']}\nDuration: {data['gameLength']}"
+            embed: discord.Embed = discord.Embed(title="LoL Replay",
+                                                 colour=discord.Colour(0x0099ff),
+                                                 description=patch_description)
 
             stats = data["statsJson"]
             
@@ -119,9 +122,17 @@ async def parse_attachment(bot: commands.Bot, channel: discord.TextChannel, atta
                         player_kda: str = f"{player['CHAMPIONS_KILLED']}/{player['NUM_DEATHS']}/{player['ASSISTS']}"
 
                         if player["WIN"] == "Win":
-                            winning_team.append( (player['NAME'], player['SKIN'], player_cs, player_kda, player['GOLD_EARNED']) )
+                            winning_team.append((player['NAME'],
+                                                 player['SKIN'],
+                                                 player_cs,
+                                                 player_kda,
+                                                 player['GOLD_EARNED']))
                         else:
-                            losing_team.append( (player['NAME'], player['SKIN'], player_cs, player_kda, player['GOLD_EARNED']) )
+                            losing_team.append((player['NAME'],
+                                                player['SKIN'],
+                                                player_cs,
+                                                player_kda,
+                                                player['GOLD_EARNED']))
 
                     header:                     tuple = ("Player",                       "Champion", "CS", "KDA", "Gold")
                     team_lost_header:           tuple = ("Losing team",                  "",         "",   "",    "")
@@ -158,7 +169,7 @@ async def parse_attachment(bot: commands.Bot, channel: discord.TextChannel, atta
             print("Invalid ROFL file.")
 
 
-async def parse_message(bot : commands.Bot, message : discord.Message):
+async def parse_message(bot : commands.Bot, message: discord.Message):
     attachments = message.attachments
 
     for attachment in attachments:

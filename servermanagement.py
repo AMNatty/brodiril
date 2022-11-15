@@ -133,6 +133,6 @@ class Administrative(commands.Cog):
             await ctx.send('**Error:** I do not have the according permissions / roles to change your name.')
 
 
-def setup(bot: commands.Bot):
+async def setup(bot: commands.Bot):
     print('Server management command extensions loaded...')
-    bot.add_cog(Administrative(bot))
+    await bot.add_cog(Administrative(bot))

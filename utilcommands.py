@@ -35,7 +35,7 @@ class Social(commands.Cog):
     #     await ctx.send(vid_url)
 
 
-def setup(bot: commands.Bot):
-    bot.add_cog(Management(bot))
-    bot.add_cog(Social(bot))
+async def setup(bot: commands.Bot):
+    await bot.add_cog(Management(bot))
+    await bot.add_cog(Social(bot))
     print("Social, management and utility command extensions loaded...")
